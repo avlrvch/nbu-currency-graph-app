@@ -20,12 +20,11 @@ public class GraphController {
     NbuApiClient nbuApiClient;
 
     private Map<String, Double> exchangeRates;
-    private String chartTitle;
 
     @PostConstruct
     public void init(){
         exchangeRates = new LinkedHashMap<>();
-        chartTitle = "";
+
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -40,7 +39,6 @@ public class GraphController {
                                          @RequestParam("currency") String currency,
                                          ModelMap modelMap) {
 
-        chartTitle = currency + " to UAH";
         List<DateCurrency> dateCurrencies = nbuApiClient.getCurrencyVolumeInDateRange(dateFrom,dateTo, currency);
 
         for (DateCurrency dateCurrency : dateCurrencies){
@@ -48,11 +46,6 @@ public class GraphController {
         }
 
         return "index";
-    }
-
-    @ModelAttribute("chartTitle")
-    public String getChartTitle(){
-        return chartTitle;
     }
 
     @ModelAttribute("exchange")

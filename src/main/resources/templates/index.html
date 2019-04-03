@@ -44,7 +44,7 @@
         </form>
     </div>
 
-    <div id="chartContainer" style="height: 400px; width: 100%;">
+    <div id="chartContainer">
     </div>
 
     <script th:inline="javascript">
@@ -57,9 +57,6 @@
 
                     animationEnabled: true,
                     theme: "light2",
-                    title: {
-                        text: getChartTitle()
-                    },
                     axisY: {
                         includeZero: false
                     },
@@ -80,7 +77,6 @@
             var exchangeCurrency = [[${exchange.values()}]];
             var exchangeDates = [[${exchange.keySet()}]];
 
-
             for (var i = 0; i < exchangeCurrency.length; i++) {
                 result.push({y: exchangeCurrency[i], label: exchangeDates[i]});
             }
@@ -88,17 +84,11 @@
             return result;
         };
 
-        var getChartTitle = function(){
-            var title = [[${chartTitle}]];
-
-            console.log(title);
-
-            return title;
-        };
         $('#params').submit(function() {
             $('.loaderContainer').show();
             $('.paramsFormContainer').hide();
             $('#chartContainer').hide();
+
             return true;
         });
     </script>

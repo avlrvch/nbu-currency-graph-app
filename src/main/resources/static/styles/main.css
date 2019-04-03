@@ -35,6 +35,12 @@ div.paramsFormContainer{
 #params button:hover {
     background-color: royalblue;
 }
+
+#chartContainer{
+    height: 400px;
+    width: 100%;
+}
+
 .loaderContainer{
     margin: 5em;
     text-align: center;
