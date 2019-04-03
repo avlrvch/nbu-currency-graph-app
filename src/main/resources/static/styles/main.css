@@ -1,0 +1,70 @@
+
+body{
+    background-color: rgba(255, 220, 192, 0);
+    background-size: 100%;
+}
+
+div.paramsFormContainer{
+    width: 100%;
+    align-content: center;
+    display: block;
+    text-align: center;
+    padding-top: 3em;
+    padding-bottom: 3em;
+}
+
+#params {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+#params label {
+    margin: 5px 0px 5px 0;
+}
+
+#params input, select {
+    vertical-align: middle;
+    margin: 5px 10px 5px 10px;
+    padding: 5px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+#params button:hover {
+    background-color: royalblue;
+}
+.loaderContainer{
+    margin: 5em;
+    text-align: center;
+}
+
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+.loader, loaderLabel{
+    margin: 1em auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 800px) {
+    #params input {
+        margin: 10px 0;
+    }
+
+    #params {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

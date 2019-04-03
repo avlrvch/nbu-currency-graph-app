@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+    <script src="scripts/datepicker.js"></script>
+
+    <script>
+        $(function(){
+            $("#header").load("header/header.html");
+        });
+    </script>
+</head>
+
+<body>
+    <div id="header"></div>
+
+    <div class="loaderContainer">
+        <label class="loaderLabel">Retrieving data from NBU...</label>
+        <div class="loader"></div>
+    </div>
+
+    <div class="paramsFormContainer">
+        <form id="params" action="/app" method="post" autocomplete="off" >
+            <label for="from">Date From:</label>
+            <input name="dateFrom" id="from" required>
+
+            <label for="to">Date To:</label>
+            <input name="dateTo" id="to" required>
+
+            <label for="currency">Currency:</label>
+            <select name="currency" id="currency">
+                <option th:value="USD">USD</option>
+                <option th:value="EUR">EURO</option>
+            </select>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <div id="chartContainer" style="height: 400px; width: 100%;">
+    </div>
+
+    <script th:inline="javascript">
+        window.onload = function () {
+
+            $('.loaderContainer').hide();
+
+            if (getChartData().length !== 0) {
+                var chart = new CanvasJS.Chart("chartContainer", {
+
+                    animationEnabled: true,
+                    theme: "light2",
+                    title: {
+                        text: getChartTitle()
+                    },
+                    axisY: {
+                        includeZero: false
+                    },
+                    data: [{
+                        type: "line",
+                        dataPoints: getChartData()
+                    }]
+                });
+
+                chart.render();
+            }
+
+        };
+
+        var getChartData = function() {
+            var result = [];
+
+            var exchangeCurrency = [[${exchange.values()}]];
+            var exchangeDates = [[${exchange.keySet()}]];
+
+
+            for (var i = 0; i < exchangeCurrency.length; i++) {
+                result.push({y: exchangeCurrency[i], label: exchangeDates[i]});
+            }
+
+            return result;
+        };
+
+        var getChartTitle = function(){
+            var title = [[${chartTitle}]];
+
+            console.log(title);
+
+            return title;
+        };
+        $('#params').submit(function() {
+            $('.loaderContainer').show();
+            $('.paramsFormContainer').hide();
+            $('#chartContainer').hide();
+            return true;
+        });
+    </script>
+
+</body>
+</html>
