@@ -7,7 +7,6 @@ import ua.net.azhytnytskyi.NBUCurrencyGraph.dto.DateCurrencyDto;
 import java.util.Date;
 import java.util.List;
 
-@Component
 public interface ApiClient {
 
     List<DateCurrency> getCurrencyVolumeInDateRange(Date from, Date due, String currencyCode);
