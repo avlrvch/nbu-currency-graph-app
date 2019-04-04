@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import ua.net.azhytnytskyi.NBUCurrencyGraph.client.NbuApiClient;
+import ua.net.azhytnytskyi.NBUCurrencyGraph.client.ApiClient;
 import ua.net.azhytnytskyi.NBUCurrencyGraph.dto.DateCurrency;
 
 import javax.annotation.PostConstruct;
@@ -17,7 +17,7 @@ import java.util.*;
 public class GraphController {
 
     @Autowired
-    NbuApiClient nbuApiClient;
+    ApiClient nbuApiClient;
 
     private Map<String, Double> exchangeRates;
 
@@ -33,7 +33,7 @@ public class GraphController {
         return "index";
     }
 
-    @RequestMapping(method = RequestMethod.POST, params = {"dateFrom","dateTo","currency"})
+    @RequestMapping(method = RequestMethod.POST)
     public String getChartDateWithParams(@RequestParam("dateFrom") Date dateFrom,
                                          @RequestParam("dateTo") Date dateTo,
                                          @RequestParam("currency") String currency,

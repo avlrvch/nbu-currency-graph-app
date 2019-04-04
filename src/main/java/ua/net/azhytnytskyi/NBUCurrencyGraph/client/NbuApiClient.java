@@ -22,8 +22,12 @@ public class NbuApiClient implements ApiClient {
     @Value("${npu.api.date.format}")
     private String dateFormat;
 
-    @Autowired
     private DateUtils dateUtils;
+
+    @Autowired
+    public NbuApiClient(DateUtils dateUtils) {
+        this.dateUtils = dateUtils;
+    }
 
     @Override
     public List<DateCurrency> getCurrencyVolumeInDateRange(Date from, Date due, String currencyCode) {
