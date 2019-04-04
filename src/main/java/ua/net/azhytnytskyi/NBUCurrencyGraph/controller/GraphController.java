@@ -24,7 +24,6 @@ public class GraphController {
     @PostConstruct
     public void init(){
         exchangeRates = new LinkedHashMap<>();
-
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -44,6 +43,8 @@ public class GraphController {
         for (DateCurrency dateCurrency : dateCurrencies){
             exchangeRates.put(dateCurrency.getExchangedate(), dateCurrency.getRate());
         }
+
+        modelMap.addAttribute("title" , currency + " to UAH:");
 
         return "index";
     }
