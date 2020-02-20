@@ -9,10 +9,8 @@ import ua.net.azhytnytskyi.NBUCurrencyGraph.dto.DateCurrencyDto;
 import ua.net.azhytnytskyi.NBUCurrencyGraph.utils.DateUtils;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class NbuApiClient implements ApiClient {
@@ -31,17 +29,14 @@ public class NbuApiClient implements ApiClient {
 
     @Override
     public List<DateCurrency> getCurrencyVolumeInDateRange(Date from, Date due, String currencyCode) {
-        List<DateCurrency> dateCurrencies = new ArrayList<>();
 
-        DateCurrencyDto dateCurrencyDto;
-        List<LocalDate> datesInRange = dateUtils.getLocalDatesListInRange(from,due);
+        List<LocalDate> datesInRange = dateUtils.getLocalDatesListInRange(from, due);
 
-        for (LocalDate date : datesInRange){
-            dateCurrencyDto = getCurrencyVolumeByDay(dateUtils.formatDateByPattern(date,dateFormat));
-            dateCurrencies.add(getCurrencyByCode(currencyCode,dateCurrencyDto));
-        }
-
-        return dateCurrencies;
+        return datesInRange.stream()
+                .map(date -> dateUtils.formatDateByPattern(date, dateFormat))
+                .map(this::getCurrencyVolumeByDay)
+                .map(dateCurrencyDto -> getCurrencyByCode(currencyCode, dateCurrencyDto))
+                .collect(Collectors.toList());
     }
 
     private DateCurrencyDto getCurrencyVolumeByDay(String dateFormatted) {
@@ -52,21 +47,18 @@ public class NbuApiClient implements ApiClient {
         DateCurrencyDto dateCurrencyDto = new DateCurrencyDto();
 
         dateCurrencyDto.setDateCurrencyDateCurrencies(
-                Arrays.asList(restTemplate
+                Arrays.asList(Objects.requireNonNull(restTemplate
                         .getForEntity(url, DateCurrency[].class)
-                        .getBody()));
+                        .getBody())));
 
         return dateCurrencyDto;
     }
 
     private DateCurrency getCurrencyByCode(String currencyCode, DateCurrencyDto dateCurrencyDto) {
 
-        for (DateCurrency dateCurrency : dateCurrencyDto.getDateCurrencyDateCurrencies()) {
-            if (dateCurrency.getCc().equals(currencyCode)) {
-                return dateCurrency;
-            }
-        }
-
-        return null;
+        return dateCurrencyDto.getDateCurrencyDateCurrencies().stream()
+                .filter(dateCurrency -> dateCurrency.getCc().equals(currencyCode))
+                .findFirst()
+                .orElse(null);
     }
 }

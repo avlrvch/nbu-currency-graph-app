@@ -40,9 +40,9 @@ public class GraphController {
 
         List<DateCurrency> dateCurrencies = nbuApiClient.getCurrencyVolumeInDateRange(dateFrom,dateTo, currency);
 
-        for (DateCurrency dateCurrency : dateCurrencies){
+        dateCurrencies.forEach(dateCurrency -> {
             exchangeRates.put(dateCurrency.getExchangedate(), dateCurrency.getRate());
-        }
+        });
 
         modelMap.addAttribute("title" , currency + " to UAH:");
 
